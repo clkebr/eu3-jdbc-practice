@@ -4,6 +4,10 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.*;
 
 public class SpartanTestWithParameters {
@@ -52,6 +56,64 @@ public class SpartanTestWithParameters {
         Assert.assertTrue(response.body().asString().contains("Spartan Not Found"));
     }
 
+    /*
+        Given accept type is Json
+        And query parameter values are :
+        gender|Female
+        nameContains|e
+        When user sends GET request to /api/spartans/search
+        Then response status code should be 200
+        And response content-type: application/json;charset=UTF-8
+        And "Female" should be in response payload
+        And "Janette" should be in response payload
+     */
+    @Test
+    public void test3(){
+        Response response = given().accept(ContentType.JSON)
+                .and().queryParam("gender", "Female")
+                .and().queryParam("nameContains", "e")
+                .and().when().get("/api/spartans/search");
+
+        Assert.assertEquals(response.statusCode(),200);
+        Assert.assertEquals(response.contentType(),"application/json;charset=UTF-8");
+        Assert.assertTrue(response.body().asString().contains("Female"));
+        Assert.assertTrue(response.body().asString().contains("Janette"));
+    }
+     /*
+        Given accept type is Json
+        And query parameter values are :
+        gender|Female
+        nameContains|e
+        When user sends GET request to /api/spartans/search
+        Then response status code should be 200
+        And response content-type: application/json;charset=UTF-8
+        And "Female" should be in response payload
+        And "Janette" should be in response payload
+     */
+
+    @Test
+    public void positiveTestWithQueryParamWithMaps(){
+        //create a map and add query parameters
+        Map<String,Object> queryMap = new HashMap<>();
+        queryMap.put("gender","Female");
+        queryMap.put("nameContains","e");
+
+        Response response = given().accept(ContentType.JSON)
+                .and().queryParams(queryMap)
+                .when().get("/api/spartans/search");
+
+        //response verification
+        //verify status code
+        Assert.assertEquals(response.statusCode(),200);
+        //verify content-type
+        Assert.assertEquals(response.contentType(),"application/json;charset=UTF-8");
+        //verify Female in the response
+        Assert.assertTrue(response.body().asString().contains("Female"));
+        //verify Janette in the response
+        Assert.assertTrue(response.body().asString().contains("Janette"));
+
+
+    }
 
 
 
