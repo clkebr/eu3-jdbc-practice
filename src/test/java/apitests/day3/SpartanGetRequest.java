@@ -1,4 +1,4 @@
-package apitests;
+package apitests.day3;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Headers;

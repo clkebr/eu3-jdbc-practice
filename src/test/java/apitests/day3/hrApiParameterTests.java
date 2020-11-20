@@ -1,4 +1,4 @@
-package apitests;
+package apitests.day3;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -35,4 +35,24 @@ public class hrApiParameterTests {
         assertEquals(response.contentType(),"application/json");
         assertTrue(response.body().asString().contains("United States of America"));
     }
+
+    @Test
+    public void test2(){
+        Response response = given().accept(ContentType.JSON)
+                .and().queryParam("q","{\"job_id\":\"IT_PROG\"}")
+                .when().get("/employees");
+
+        assertEquals(response.statusCode(),200);
+        assertEquals(response.contentType(),"application/json");
+        assertTrue(response.body().asString().contains("IT_PROG"));
+
+
+
+    }
+
+
+
+
+
+
 }
